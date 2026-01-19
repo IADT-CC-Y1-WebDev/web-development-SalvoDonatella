@@ -49,7 +49,19 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        $appleCost = 1;
+        $appleQuant = 5;
+        $orangeCost = 2;
+        $orangeQuant = 3;
+        $bananaCost = 1;
+        $bananaQuant = 1;
+
+        $appleSub = $appleCost * $appleQuant;
+        $orangeSub = $orangeCost * $orangeQuant;
+        $bananaSub = $bananaCost * $bananaQuant;
+
+        echo ($appleSub+$orangeSub*$bananaSub)*.9;
+
         ?>
     </div>
 
@@ -64,7 +76,13 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        $isStudent = true;
+        $hasDiscount = true;
+        $isPremiumMember = false;
+
+        echo "Is student?: " . ($isStudent ? "Yes" : "No") . "<br>";
+        echo "Has discount?: " . ($hasDiscount ? "Yes" : "No") . "<br>";
+        echo "Is a premium member?" . ($isPremiumMember ? "Yes" : "No");
         ?>
     </div>
 
