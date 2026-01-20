@@ -26,7 +26,20 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        $age = rand(0, 100); 
+        echo "<p> You are $age years old </p>";
+        if ($age <= 12) {
+            echo "<p>Child</p>";
+        }
+        else if ($age >= 13 and $age <= 19) {
+            echo "<p>Teenager</p>";
+        }
+        else if ($age >= 20 and $age <=64) {
+            echo "<p>Adult</p>";
+        }
+        else if ($age > 65) {
+            echo "<p> Senior </p>";
+        }
         ?>
     </div>
 
@@ -42,7 +55,32 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        $day = rand(1,7);
+        switch(true) {
+            case ($day == 1):
+                echo "Monday, Weekday";
+                break;
+             case ($day == 2):
+                echo "Tuesday, Weekday";
+                break;
+             case ($day == 3):
+                echo "Wednesday, Weekday";
+                break;
+             case ($day == 4):
+                echo "Thursday, Weekday";
+                break;
+             case ($day == 5):
+                echo "Friday, Weekday";
+                break;
+             case ($day == 6):
+                echo "Saturday, Weekend";
+                break;
+             case ($day == 7):
+                echo "Sunday, Weekend";
+                break;
+            } 
+            
+        
         ?>
     </div>
 
@@ -57,7 +95,12 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        $total = 10;
+        for ($mult = 1; $mult < 11; $mult++) {
+            $total = $mult * 10;
+            echo "<p> 10 * $mult = $total </p>";
+    
+        }
         ?>
     </div>
 
@@ -72,7 +115,14 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        $countdown = 10;
+        while ($countdown != 0) {
+            echo "<p> $countdown </p>";
+            $countdown -= 1;
+            if ($countdown == 0) {
+                echo "Blastoff";
+            }
+        }
         ?>
     </div>
 

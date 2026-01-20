@@ -82,7 +82,7 @@
 
         echo "Is student?: " . ($isStudent ? "Yes" : "No") . "<br>";
         echo "Has discount?: " . ($hasDiscount ? "Yes" : "No") . "<br>";
-        echo "Is a premium member?" . ($isPremiumMember ? "Yes" : "No");
+        echo "Is a premium member?: " . ($isPremiumMember ? "Yes" : "No");
         ?>
     </div>
 

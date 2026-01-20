@@ -26,7 +26,15 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        print('$_SERVER["PHP_SELF"] = ');
+        print($_SERVER['PHP_SELF']);
+        print('$_SERVER["REQUEST_METHOD"] = ');
+        print($_SERVER['REQUEST_METHOD']);
+        print('$_SERVER["HTTP_HOST"] = ');
+        print($_SERVER['HTTP_HOST']);
+        print('$_SERVER["HTTP_USER_AGENT"] = ');
+        print($_SERVER['HTTP_USER_AGENT']);
+
         ?>
     </div>
 
@@ -42,7 +50,12 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        $name = "Guest";
+        if (array_key_exists("name", $_GET)) {
+            $name = $_GET["name"];
+        }
+        echo "Hello, $name";
+        
         ?>
     </div>
 
@@ -59,7 +72,17 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        $product = "Error: no product.";
+        $quantity = "Error: no quantity.";
+        if (array_key_exists("product", $_GET) and array_key_exists("quantity", $_GET)) {
+            $product = $_GET["product"];
+            $quantity = $_GET["quantity"];
+            echo "You ordered $quantity $product(s)";
+        }
+        else{
+            echo "$product, $quantity";
+        }
+        
         ?>
     </div>
 
