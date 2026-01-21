@@ -24,7 +24,12 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        function celciusToFarenheit($celcius) {
+            $farenheit = ($celcius * 9/5) +32;
+            echo "$celcius degrees Celcius is $farenheit degrees Fareheit";
+        }
+
+        celciusToFarenheit(rand(1,100));
         ?>
     </div>
 
@@ -40,7 +45,16 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        function calculateRectangleArea($height, $width=0) {
+            if ($width == 0){
+                $width = $height;
+            }
+
+            $area = $height * $width;
+            echo $area;
+        }
+
+        calculateRectangleArea(5);
         ?>
     </div>
 
@@ -56,7 +70,16 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        function checkEvenOdd($num) {
+            if ($num % 2 == 0) {
+                echo "$num is even";
+            }
+            else {
+                echo "$num is odd";
+            }
+        }
+
+        checkEvenOdd(68);
         ?>
     </div>
 
@@ -72,7 +95,37 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        $list = [1,7,3,4];
+
+        function getArrayStats($numList) {
+            $maxHold = 0;
+            $minHold = $numList[0];
+            $avgHold = 0;
+
+            for ($i = 0; $i < count($numList);$i++)
+                if ($numList[$i] > $maxHold){
+                    $maxHold = $numList[$i];
+                }
+            
+            echo "<p>$maxHold</p>";
+
+            for ($i = 0; $i < count($numList);$i++)
+                if ($numList[$i] < $minHold){
+                    $minHold = $numList[$i];
+                }
+            
+            echo "<p>$minHold</p>";
+
+            for ($i = 0; $i < count($numList);$i++)
+                $avgHold += $numList[$i];
+                
+            $average = $avgHold / count($numList);
+
+            echo $average;
+                
+        }
+
+        getArrayStats($list);
         ?>
     </div>
 
