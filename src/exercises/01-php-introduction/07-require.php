@@ -21,7 +21,13 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        // TODO: Write your solution here
+        require 'inc/navigation.php';
+
+        echo "<p> test </p>";
+        
+        require 'inc/navigation.php';
+
+
         ?>
     </div>
 
