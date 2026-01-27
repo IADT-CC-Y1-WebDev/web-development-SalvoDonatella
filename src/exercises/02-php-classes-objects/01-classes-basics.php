@@ -84,11 +84,12 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        $student2 = new Student2("Steven", "1234567");
+        $student2 = new Student2("Steven", "5555555");
 
-        echo "Student name is $student2->name";
+        $student2->getName();
         echo '<br>';
-        echo "Student number is $student2->number";
+        $student2->getNumber();
+
         ?>
     </div>
 
