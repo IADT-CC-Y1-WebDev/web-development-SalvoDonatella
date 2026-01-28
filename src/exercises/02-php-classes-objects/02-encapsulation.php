@@ -36,9 +36,9 @@
         require_once 'classes/student.php';
         $student2 = new Student2("John", "09867454");
 
-        $student2->getName();
-        echo '<br>';
-        $student2->getNumber();
+        // $student2->getName();
+        // echo '<br>';
+        // $student2->getNumber();
         // echo $student2->name;
         ?>
     </div>
@@ -61,9 +61,9 @@
         <?php
         $student2 = new Student2("Barry", "78347376");
 
-        $student2->getName();
-        echo '<br>';
-        $student2->getNumber();
+        // $student2->getName();
+        // echo '<br>';
+        // $student2->getNumber();
         ?>
     </div>
 
@@ -83,11 +83,11 @@
     <p class="output-label">Output:</p>
     <div class="output">
         <?php
-        $student2 = new Student2("Susie","0");
+        $student2 = new Student2("Susie","");
 
-        $student2->getName();
-        echo '<br>';
-        $student2->getNumber();
+        // $student2->getName();
+        // echo '<br>';
+        // $student2->getNumber();
         ?>
     </div>
 
