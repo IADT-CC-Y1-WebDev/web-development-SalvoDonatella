@@ -59,7 +59,8 @@ try {
         'year' => $_POST['year'] ?? null, 
         'isbn' => $_POST['isbn'] ?? null, 
         'format_ids' => $_POST['format_ids'] ?? [], 
-        'description' => $_POST['description'] ?? null
+        'description' => $_POST['description'] ?? null,
+        'cover' => $_FILES['cover'] ?? null
     ];
 
     dd($data);
@@ -81,7 +82,8 @@ try {
         'year' => "required|nonempty|integer|minvalue:1900|maxvalue:" . $year,
         'isbn' => "required|nonempty|min:13|max:13",
         'format_ids' => "required|nonempty|array|min:1|max:4",
-        'description' => "required|nonempty|min:10"
+        'description' => "required|nonempty|min:10",
+        'cover' => 'required|file|image|mimies:jpg,jpeg,png|max_file_size:5242880'
     ];
 
      // Create validator and check for failures
@@ -97,6 +99,10 @@ try {
         dd($validator->errors(), true);
     
     }
+
+    $uploader = new ImageUpload();
+    $imageFilename = $uploader->process($_FILES['cover']);
+
     echo "Validation successful!";
 
     // =========================================================================
