@@ -28,6 +28,27 @@
     <div class="output">
         <?php
         // TODO: Write your solution here
+        function calculateSquareRoot($number) {
+            if ($number < 0) {
+                throw new Exception("Cannot get the square of a negative number");
+            }
+            return sqrt($number);
+        }
+
+        try {
+            $result = calculateSquareRoot(16);
+            echo "$result<br>"; 
+
+            $result = calculateSquareRoot(25);
+            echo "$result<br>"; 
+
+            $result = calculateSquareRoot(-9);
+            echo "$result<br>"; 
+        }
+        catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+
         ?>
     </div>
 
@@ -45,6 +66,29 @@
     <div class="output">
         <?php
         // TODO: Write your solution here
+        function validateEmail($email) {
+            $char = "@";
+
+            if (strpos($email, $char) === false) {
+                throw new Exception("Invalid email, does not contain @ symbol.");
+            }
+
+            echo $email;
+        }
+
+        try {
+            $result = validateEmail("user@example.com");
+            echo "$result<br>";
+
+            $result = validateEmail("test@test.ie");
+            echo "$result<br>";
+
+            $result = validateEmail("invalid-email");
+            echo "$result<br>";
+        }
+        catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
         ?>
     </div>
 
@@ -61,6 +105,28 @@
     <div class="output">
         <?php
         // TODO: Write your solution here
+        function processFile($filename) {
+            if ($filename === "") {
+                throw new Exception("File name cannot be empty <br>");
+            }
+
+            echo $filename;
+        }
+
+        try {
+            $result = processFile("examplefile");
+            echo "$result<br>";
+
+            $result = processFile("");
+            echo "$result<br>";
+        }
+
+        catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        finally {
+            echo "Processing complete";
+        }
         ?>
     </div>
 
