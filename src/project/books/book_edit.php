@@ -1,5 +1,7 @@
 <?php
 require_once 'php/lib/config.php';
+require_once 'php/lib/session.php';
+require_once 'php/lib/forms.php';
 require_once 'php/lib/utils.php';
  
 if ($_SERVER['REQUEST_METHOD'] !== 'GET' || !array_key_exists('id', $_GET)) {
@@ -110,3 +112,4 @@ if ($book) {
         </div>
     </body>
 </html>
+ 
