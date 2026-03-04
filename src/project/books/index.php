@@ -34,15 +34,6 @@ catch (PDOException $e) {
                             <input type="text" id="title_filter" name="title_filter">
                         </div>
                         <div>
-                            <label for="genre_filter">Genre:</label>
-                            <select id="genre_filter" name="genre_filter">
-                                <option value="">All Genres</option>
-                                <?php foreach ($genres as $genre) { ?>
-                                    <option value="<?= h($genre->id) ?>"><?= h($genre->name) ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div>
                             <label for="platform_filter">Platform:</label>
                             <select id="platform_filter" name="platform_filter">
                                 <option value="">All Platforms</option>
@@ -61,7 +52,7 @@ catch (PDOException $e) {
         </div>
         <div class="container">
             <?php if (empty($books)) { ?>
-                <p>No games found.</p>
+                <p>No book found.</p>
             <?php } else { ?>
                 <div class="width-12 cards">
                     <?php foreach ($books as $book) { ?>

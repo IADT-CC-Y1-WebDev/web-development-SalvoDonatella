@@ -3,7 +3,7 @@ require_once 'php/lib/config.php';
 require_once 'php/lib/utils.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET' || !array_key_exists('id', $_GET)) {
-    die("<p>Error: No game ID provided.</p>");
+    die("<p>Error: No book ID provided.</p>");
 }
 $id = $_GET['id'];
 
