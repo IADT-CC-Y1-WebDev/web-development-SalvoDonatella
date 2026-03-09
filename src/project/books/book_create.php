@@ -34,7 +34,7 @@ catch (Exception $e) {
     <?php dd(getFormErrors()); ?>
  
 
-    <form action="book_store.php" method="POST" enctype="multipart/form-data">
+    <form action="book_store.php" method="POST" enctype="multipart/form-data" novalidate>
         <div class="form-group">
             <label for="title">Book Title:</label>
             <input type="text" id="title" name="title" value="<?= h(old('title')) ?>">
@@ -121,7 +121,7 @@ catch (Exception $e) {
         <div class="form-group">
             <label for="cover">Book Cover Image (max 2MB):</label>
   
-            <input type="file" id="cover" name="cover" accept="image/*">
+            <input type="file" id="cover_filename" name="cover_filename" accept="image/*">
  
             <?php if (error('cover')): ?>
             <p class="error"><?= error('cover') ?></p>

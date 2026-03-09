@@ -15,6 +15,7 @@ try {
     }
 
    $data = [
+        'id' => $_POST['id'] ?? null,
         'title' => $_POST['title'] ?? null,
         'author' => $_POST['author'] ?? null,
         'year' => $_POST['year'] ?? null,
@@ -24,10 +25,11 @@ try {
     ];
 
     $rules = [
+        'id' => 'required|integer|min:1',
         'title' => 'required|notempty|min:1|max:255',
         'author' => 'required|notempty|min:1|max:255',
         'year' => 'required|notempty|min:4|max:4',
-        'isbn' => 'required|notempty|min:13|max:13',
+        'isbn' => 'required|notempty|min:13|max:14',
         'description' => 'required|notempty|min:10|max:5000',
         'image' => 'required|file|image|mimes:jpg,jpeg,png|max_file_size:5242880'
     ];
@@ -47,12 +49,11 @@ try {
         throw new Exception('Book not found.');
     }
 
-    // // Verify platforms exist
-    // foreach ($data['platform_ids'] as $platformId) {
-    //     if (!Platform::findById($platformId)) {
-    //         throw new Exception('One or more selected platforms do not exist.');
-    //     }
-    // }
+    foreach ($data['publisher_ids'] as $publisher_id) {
+        if (!Publisher::findById($publisher_id)) {
+            throw new Exception('One or more selected publishers do not exist.');
+        }
+    }
 
     $cover_filename = null;
     $uploader = new ImageUpload();
@@ -99,3 +100,4 @@ catch (Exception $e) {
         redirect('index.php');
     }
 }
+?>

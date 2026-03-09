@@ -29,7 +29,7 @@ try {
         'author' => 'required|notempty|min:1|max:255',
         'publisher_id' => 'required|notempty|integer',
         'year' => 'required|notempty|min:4|max:4',
-        'isbn' => 'required|notempty|min:13|max:13',
+        'isbn' => 'required|notempty|min:13|max:14',
         'description' => 'required|notempty|min:10|max:5000',
         'cover_filename' => 'required|file|image|mimes:jpg,jpeg,png|max_file_size:5242880'
     ];
@@ -45,7 +45,7 @@ try {
     }
 
     $uploader = new ImageUpload();
-    $cover_filename = $uploader->process($_FILES['cover']);
+    $cover_filename = $uploader->process($_FILES['cover_filename']);
 
     if (!$cover_filename) {
         throw new Exception('Failed to process and save the image.');
@@ -57,7 +57,7 @@ try {
     $book->year = $data['year'];
     $book->isbn = $data['isbn'];
     $book->description = $data['description'];
-    $book->image = $cover_filename;
+    $book->cover_filename = $cover_filename;
 
     // Save to database
     $book->save();

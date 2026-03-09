@@ -4,18 +4,30 @@ require_once 'php/lib/session.php';
 require_once 'php/lib/forms.php';
 require_once 'php/lib/utils.php';
  
-if ($_SERVER['REQUEST_METHOD'] !== 'GET' || !array_key_exists('id', $_GET)) {
-    die("<p>Error: No book ID provided.</p>");
-}
-$id = $_GET['id'];
- 
+startSession();
+dd($_SESSION);
 try {
+    if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+        throw new Exception('Invalid request method.');
+    }
+    if (!array_key_exists('id', $_GET)) {
+        throw new Exception('No book ID provided.');
+    }
+    $id = $_GET['id'];
+ 
     $book = Book::findById($id);
     if ($book === null) {
-        die("<p>Error: Book not found.</p>");
+        throw new Exception("Book not found.");
     }
  
-    $book = Book::findById($id);
+    $bookFormats = Format::findByBook($id);
+    $bookFormatIds = [];
+    foreach ($bookFormats as $format) {
+        $bookFormatIds[] = $format->id;
+    }
+ 
+    $formats = Format::findAll();
+    $publishers = Publisher::findAll();
 }
 catch (PDOException $e) {
     setFlashMessage('error', 'Error: ' . $e->getMessage());
@@ -26,37 +38,105 @@ catch (PDOException $e) {
 <html lang="en">
     <head>
         <?php include 'php/inc/head_content.php'; ?>
-        <title>View Book</title>
+        <title>Edit Book</title>
     </head>
     <body>
         <div class="container">
-            <div class="width-12 header">
+            <div class="width-12">
                 <?php require 'php/inc/flash_message.php'; ?>
             </div>
-        </div>
-        <div class="container">
             <div class="width-12">
-                <div class="hCard">
-                    <div class="bottom-content">
-                        <img src="images/<?= htmlspecialchars($book->cover_filename) ?>" />
- 
-                        <div class="actions">
-                            <a href="book_edit.php?id=<?= h($book->id) ?>">Edit</a> /
-                            <a href="book_delete.php?id=<?= h($book->id) ?>">Delete</a> /
-                            <a href="index.php">Back</a>
+                <h1>Edit Book</h1>
+            </div>
+            <div class="width-12">
+                <form action="book_update.php" method="POST" enctype="multipart/form-data">
+                    <div class="input">
+                        <input type="hidden" name="id" value="<?= h($book->id) ?>">
+                    </div>
+                    <div class="input">
+                        <label class="special" for="title">Title:</label>
+                        <div>
+                            <input type="text" id="title" name="title" value="<?= old('title', $book->title) ?>" required>
+                            <p><?= error('title') ?></p>
                         </div>
                     </div>
- 
-                    <div class="bottom-content">
-                        <h2><?= htmlspecialchars($book->title) ?></h2>
-                        <p>Author: <?= htmlspecialchars($book->author) ?></p>
-                        <p>Year: <?= htmlspecialchars($book->year) ?></p>
-                        <p>ISBN: <?= htmlspecialchars($book->isbn) ?></p>
-                        <p>Description:<br /><?= nl2br(htmlspecialchars($book->description)) ?></p>
+                    <div class="input">
+                        <label class="special" for="author">Author:</label>
+                        <div>
+                            <input type="text" id="author" name="author" value="<?= old('author', $book->author) ?>" required>
+                            <p><?= error('author') ?></p>
+                        </div>
                     </div>
-                </div>
+                    <div class="input">
+                        <label class="special" for="publisher_id">Publisher:</label>
+                        <div>
+                            <select id="publisher_id" name="publisher_id" required>
+                                <?php foreach ($publishers as $publisher) { ?>
+                                    <option value="<?= h($publisher->id) ?>" <?= chosen('publisher_id', $publisher->id, $book->id) ? "selected" : "" ?>>
+                                        <?= h($publisher->name) ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                            <p><?= error('publisher_id') ?></p>
+                        </div>
+                    </div>
+                    <div class="input">
+                        <label class="special" for="year">Year:</label>
+                        <div>
+                            <input type="text" id="year" name="year" value="<?= old('year', $book->year) ?>" required>
+                            <p><?= error('year') ?></p>
+                        </div>
+                    </div>
+                    <div class="input">
+                        <label class="special" for="isbn">ISBN:</label>
+                        <div>
+                            <input type="text" id="isbn" name="isbn" value="<?= old('isbn', $book->isbn) ?>" required>
+                            <p><?= error('isbn') ?></p>
+                        </div>
+                    </div>
+                    <div class="input">
+                        <label class="special" for="description">Description:</label>
+                        <div>
+                            <textarea id="description" name="description" required><?= old('description', $book->description) ?></textarea>
+                            <p><?= error('description') ?></p>
+                        </div>
+                    </div>
+                    <div class="input">
+                        <label class="special">Formats:</label>
+                        <div>
+                            <?php foreach ($formats as $format) { ?>
+                                <div>
+                                    <input type="checkbox"
+                                        id="format_<?= h($format->id) ?>"
+                                        name="format_ids[]"
+                                        value="<?= h($format->id) ?>"
+                                        <?= chosen('format_ids', $format->id, $bookFormatIds) ? "checked" : "" ?>
+                                    >
+                                    <label for="format_<?= h($format->id) ?>"><?= h($format->name) ?></label>
+                                </div>
+                            <?php } ?>
+                        </div>
+                        <p><?= error('format_ids') ?></p>
+                    </div>
+                    <div><img src="images/<?= $book->cover_filename ?>" /></div>
+                    <div class="input">
+                        <label class="special" for="cover">Image (optional):</label>
+                        <div>
+                            <input type="file" id="cover" name="cover" accept="cover/*">
+                            <p><?= error('cover') ?></p>
+                        </div>
+                    </div>
+                    <div class="input">
+                        <button class="button" type="submit">Update Book</button>
+                        <div class="button"><a href="index.php">Cancel</a></div>
+                    </div>
+                </form>
             </div>
         </div>
     </body>
 </html>
+<?php 
+        clearFormData();
+        clearFormErrors();
+    ?>
  
