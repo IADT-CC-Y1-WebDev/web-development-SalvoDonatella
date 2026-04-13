@@ -7,31 +7,34 @@ require_once 'php/lib/utils.php';
 startSession();
 
 try {
+    
     $data = [];
     $errors = [];
-
+    
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         throw new Exception('Invalid request method.');
     }
 
-   $data = [
+    $data = [
         'id' => $_POST['id'] ?? null,
         'title' => $_POST['title'] ?? null,
         'author' => $_POST['author'] ?? null,
         'year' => $_POST['year'] ?? null,
-        'isbn' => $_POST['isbn'] ?? null,
+        'publisher_id' => $_POST['publisher_id'] ?? null,
         'description' => $_POST['description'] ?? null,
-        'image' => $_FILES['image'] ?? null
+        'format_ids' => $_POST['format_ids'] ?? [],
+        'cover' => $_FILES['cover'] ?? null
     ];
 
     $rules = [
-        'id' => 'required|integer|min:1',
+        'id' => 'required|integer',
         'title' => 'required|notempty|min:1|max:255',
         'author' => 'required|notempty|min:1|max:255',
-        'year' => 'required|notempty|min:4|max:4',
-        'isbn' => 'required|notempty|min:13|max:14',
+        'year' => 'required|notempty',
+        'publisher_id' => 'required|integer',
         'description' => 'required|notempty|min:10|max:5000',
-        'image' => 'required|file|image|mimes:jpg,jpeg,png|max_file_size:5242880'
+        'format_ids' => 'required|array|min:1|max:10',
+        'cover' => 'file|cover|mimes:jpg,jpeg,png|max_file_size:5242880' // optional -- no required rule
     ];
 
     $validator = new Validator($data, $rules);
@@ -49,34 +52,46 @@ try {
         throw new Exception('Book not found.');
     }
 
-    foreach ($data['publisher_ids'] as $publisher_id) {
-        if (!Publisher::findById($publisher_id)) {
-            throw new Exception('One or more selected publishers do not exist.');
+    $publisher = Publisher::findById($data['publisher_id']);
+    if (!$publisher) {
+        throw new Exception('Selected publisher does not exist.');
+    }
+
+    foreach ($data['format_ids'] as $formatId) {
+        if (!Format::findById($formatId)) {
+            throw new Exception('One or more selected formats do not exist.');
         }
     }
 
-    $cover_filename = null;
+    $coverFilename = null;
     $uploader = new ImageUpload();
-    if ($uploader->hasFile('image')) {
+    if ($uploader->hasFile('cover')) {
         $uploader->deleteImage($book->cover_filename);
-
-        $cover_filename = $uploader->process($_FILES['image']);
-
-        if (!$cover_filename) {
+        $coverFilename = $uploader->process($_FILES['cover']);
+        if (!$coverFilename) {
             throw new Exception('Failed to process and save the image.');
         }
     }
     
     $book->title = $data['title'];
-    $book->author = $data['author'];
+    $book ->author = $data['author'];
     $book->year = $data['year'];
-    $book->isbn = $data['isbn'];
+    $book->publisher_id = $data['publisher_id'];
     $book->description = $data['description'];
+    if ($coverFilename) {
+        $book->cover_filename = $coverFilename;
+    }
 
     $book->save();
 
-    clearFormData();
+    BookFormat::deleteByBook($book->id);
+    if (!empty($data['format_ids']) && is_array($data['format_ids'])) {
+        foreach ($data['format_ids'] as $formatId) {
+            BookFormat::create($book->id, $formatId);
+        }
+    }
 
+    clearFormData();
     clearFormErrors();
 
     setFlashMessage('success', 'Book updated successfully.');
@@ -84,8 +99,8 @@ try {
     redirect('book_view.php?id=' . $book->id);
 }
 catch (Exception $e) {
-    if ($cover_filename) {
-        $uploader->deleteImage($cover_filename);
+    if ($coverFilename) {
+        $uploader->deleteImage($coverFilename);
     }
 
     setFlashMessage('error', 'Error: ' . $e->getMessage());
@@ -100,4 +115,3 @@ catch (Exception $e) {
         redirect('index.php');
     }
 }
-?>
