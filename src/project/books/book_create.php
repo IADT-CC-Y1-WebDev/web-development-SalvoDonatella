@@ -20,27 +20,28 @@ catch (Exception $e) {
 <html lang="en">
 <head>
     <?php include './php/inc/head_content.php'; ?>
-    <title>Add New Book - Exercise</title>
+    <title>Add New Book</title>
 </head>
 <body>
     <?php require './php/inc/flash_message.php'; ?>
     <div class="back-link">
-        <a href="index.php">&larr; Back to Form Handling </a>
+        <a href="index.php">&larr; Back to Home </a>
     </div>
  
     <h1>Add New Book</h1>
  
-    <?php dd(getFormData()); ?>
-    <?php dd(getFormErrors()); ?>
+    <!-- <?php dd(getFormData()); ?>
+    <?php dd(getFormErrors()); ?> -->
  
 
-    <form action="book_store.php" method="POST" enctype="multipart/form-data" novalidate>
+    <form id="book_form" action="book_store.php" method="POST" enctype="multipart/form-data" novalidate>
+        <div id="error_summary_top" class="error-summary" style="display:none" role="alert"></div>  
+
         <div class="form-group">
             <label for="title">Book Title:</label>
             <input type="text" id="title" name="title" value="<?= h(old('title')) ?>">
-            <?php if (error('title')): ?>
-            <p class="error"><?= error('title') ?></p>
-            <?php endif; ?>
+
+            <p id="title_error" class="error"><?= error('title') ?></p>
  
         </div>
 
@@ -48,9 +49,7 @@ catch (Exception $e) {
             <label for="author">Author:</label>
             <input type="text" id="author" name="author" value="<?= h(old('author')) ?>">
  
-            <?php if (error('author')): ?>
-            <p class="error"><?= error('author') ?></p>
-            <?php endif; ?>
+            <p id="author_error" class="error"><?= error('author') ?></p>
  
         </div>
  
@@ -67,17 +66,14 @@ catch (Exception $e) {
                 <?php endforeach; ?>
             </select>
  
-            <?php if (error('publisher_id')): ?>
-            <p class="error"><?= error('publisher_id') ?></p>
-            <?php endif; ?>
+            <p id="publisher_id_error" class="error"><?= error('publisher_id') ?></p>
         </div>
  
         <div class="form-group">
             <label for="year">Year:</label>
             <input type="text" id="year" name="year" value="<?= h(old('year')) ?>">
-            <?php if (error('year')): ?>
-            <p class="error"><?= error('year') ?></p>
-            <?php endif; ?>
+
+            <p id="year_error" class="error"><?= error('year') ?></p>
         </div>
  
 
@@ -85,9 +81,7 @@ catch (Exception $e) {
             <label for="isbn">ISBN:</label>
             <input type="text" id="isbn" name="isbn" value="<?= h(old('isbn')) ?>">
  
-            <?php if (error('isbn')): ?>
-            <p class="error"><?= error('isbn') ?></p>
-            <?php endif; ?>
+            <p id="isbn_error" class="error"><?= error('isbn') ?></p>
         </div>
 
         <div class="form-group">
@@ -105,36 +99,32 @@ catch (Exception $e) {
                     </label>
                 <?php endforeach; ?>
             </div>
-            <?php if (error('format_ids')): ?>
-            <p class="error"><?= error('format_ids') ?></p>
-            <?php endif; ?>
+            <p id="format_ids_error" class="error"><?= error('format_ids') ?></p>
         </div>
 
         <div class="form-group">
             <label for="description">Description:</label>
             <textarea id="description" name="description" rows="5"><?= h(old('description')) ?></textarea>
-            <?php if (error('description')): ?>
-            <p class="error"><?= error('description') ?></p>
-            <?php endif; ?>
+
+            <p id="description_error" class="error"><?= error('description') ?></p>
         </div>
 
         <div class="form-group">
             <label for="cover">Book Cover Image (max 2MB):</label>
-  
             <input type="file" id="cover_filename" name="cover_filename" accept="image/*">
  
-            <?php if (error('cover')): ?>
-            <p class="error"><?= error('cover') ?></p>
-            <?php endif; ?>
+            <p id="cover_error" class="error"><?= error('cover') ?></p>
         </div>
  
         <div class="form-group">
-            <button type="submit" class="button">Save Book</button>
+            <button id="submit_btn" type="submit" class="button">Save Book</button>
         </div>
     </form>
     <?php 
         clearFormData();
         clearFormErrors();
     ?>
+
+    <script src="./js/book_form.js"></script>
     </body>
 </html>

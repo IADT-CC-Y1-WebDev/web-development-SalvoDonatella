@@ -123,6 +123,8 @@ catch (PDOException $e) {
             <div>
                 <select id="sort_by" name="sort_by">
                     <option value="title_asc">Title A–Z</option>
+                    <option value="year_desc">Year (newest first)</option>
+                    <option value="year_asc">Year (oldest first)</option>
                 </select>
             </div>
         </div>
@@ -139,7 +141,7 @@ catch (PDOException $e) {
             <?php if (empty($books)) { ?>
                 <p>No book found.</p>
             <?php } else { ?>
-                <div class="width-12 cards">
+                <div id="book_cards" class="width-12 cards">
                     <?php foreach ($books as $book) { 
                         $bookFormats = Format::findByBook($book->id);
                         $bookFormatIds = [];
@@ -151,7 +153,7 @@ catch (PDOException $e) {
                             data-title="<?= htmlspecialchars($book->title) ?>"
                             data-publisher="<?= htmlspecialchars($book->publisher_id) ?>"
                             data-format="[<?= implode(",", $bookFormatIds) ?>]"
-                        >
+                            data-year="<?= htmlspecialchars($book->year) ?>">
 
                             <div class="top-content">
                                 <h2>Title: <?= h($book->title) ?></h2>
