@@ -20,6 +20,7 @@ try {
         'publisher_id' => $_POST['publisher_id'] ?? null,
         'year' => $_POST['year'] ?? null,
         'isbn' => $_POST['isbn'] ?? null,
+        'format_ids' => $_POST['format_ids'] ?? [],
         'description' => $_POST['description'] ?? null,
         'cover_filename' => $_FILES['cover_filename'] ?? null
     ];
@@ -30,6 +31,7 @@ try {
         'publisher_id' => 'required|notempty|integer',
         'year' => 'required|notempty|min:4|max:4',
         'isbn' => 'required|notempty|min:13|max:14',
+        'format_ids' => 'required|array|min:1|max:10',
         'description' => 'required|notempty|min:10|max:5000',
         'cover_filename' => 'required|file|image|mimes:jpg,jpeg,png|max_file_size:5242880'
     ];
@@ -55,21 +57,19 @@ try {
     $book->title = $data['title'];
     $book->author = $data['author'];
     $book->year = $data['year'];
+    $book->publisher_id = $data['publisher_id'];
     $book->isbn = $data['isbn'];
     $book->description = $data['description'];
     $book->cover_filename = $cover_filename;
-
-    // Save to database
     $book->save();
-    // Create platform associations
-    // if (!empty($data['platform_ids']) && is_array($data['platform_ids'])) {
-    //     foreach ($data['platform_ids'] as $platformId) {
-    //         // Verify platform exists before creating relationship
-    //         if (Platform::findById($platformId)) {
-    //             GamePlatform::create($game->id, $platformId);
-    //         }
-    //     }
-    // }
+
+    if (!empty($data['format_ids']) && is_array($data['format_ids'])) {
+        foreach ($data['format_ids'] as $formatId) {
+            if (Format::findById($formatId)) {
+                BookFormat::create($book->id, $formatId);
+                }
+            }
+        }
 
     clearFormData();
     clearFormErrors();

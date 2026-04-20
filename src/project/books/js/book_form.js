@@ -9,7 +9,7 @@ let yearInput = document.getElementById('year');
 let isbnInput = document.getElementById('isbn'); 
 let formatIdsInput = document.getElementsByName('format_ids[]');
 let descriptionInput = document.getElementById('description'); 
-let coverInput = document.getElementById('cover');
+let coverInput = document.getElementById('cover_filename');
 
 let titleError = document.getElementById('title_error');
 let authorInputError = document.getElementById('author_error');
@@ -76,7 +76,8 @@ function onSubmitForm(evt) {
 
   let titleMin = titleInput.dataset.minlength || 3;
   let titleMax = titleInput.dataset.maxlength || 255;
-  let yearMin = 4;
+  let yearMinMax = 4;
+  let isbnMinMax = 14;
 
   //Title
   if(!isRequired(titleInput.value)) {
@@ -100,13 +101,19 @@ function onSubmitForm(evt) {
   //year
   if(!isRequired(yearInput.value)) {
     addError('year', 'Year is required!');
-  } else if(!isMinLength(yearInput.value, yearMin)) {
-    addError('year', `Year must be at least ${yearMin} characters long.`);
+  } else if(!isMinLength(yearInput.value, yearMinMax)) {
+    addError('year', `Year must be at least ${yearMinMax} characters long.`);
+  } else if(!isMaxLength(yearInput.value, yearMinMax)) {
+    addError('year', `Year must be at most ${yearMinMax} characters long.`);
   }
 
   //ISBN
   if(!isRequired(isbnInput.value)) {
     addError('isbn', 'ISBN is required!');
+  } else if(!isMinLength(isbnInput.value, isbnMinMax)) {
+    addError('isbn', `ISBN must be at least ${isbnMinMax} characters long.`);
+  } else if(!isMaxLength(yearInput.value, isbnMinMax)) {
+    addError('isbn', `ISBN must be at most ${isbnMinMax} characters long.`);
   }
 
   //formats
@@ -118,26 +125,26 @@ function onSubmitForm(evt) {
     }
   }
 
+  if(!formatSelected){
+      addError('format_ids', 'Select at least one format');
+    }
+
 //Description
   if(!isRequired(descriptionInput.value)) {
     addError('description', 'Description is required!');
   }
 
-  if(!formatSelected){
-    addError('format_ids', 'Select at least one format');
+  //covers
+  if(coverInput.files.length === 0) {
+    addError('cover', 'cover is required!');
   }
-
-//   //covers
-//   if(coverInput.files.length === 0) {
-//     addError('cover', 'cover is required!');
-//   }
 
   showFieldErrors();
   showErrorSummaryTop();
 
   if (Object.keys(errors).length === 0) {
-    // bookForm.submit();
-    alert('Form data valid.')
+    bookForm.submit();
+    // alert('Form data valid.')
   }
   
 }

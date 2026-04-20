@@ -30,8 +30,8 @@ catch (Exception $e) {
  
     <h1>Add New Book</h1>
  
-    <!-- <?php dd(getFormData()); ?>
-    <?php dd(getFormErrors()); ?> -->
+ <!-- <?php dd(getFormData()); ?>
+    <?php dd(getFormErrors()); ?>  -->
  
 
     <form id="book_form" action="book_store.php" method="POST" enctype="multipart/form-data" novalidate>
@@ -91,6 +91,7 @@ catch (Exception $e) {
                 <?php foreach ($formats as $format): ?>
                     <label class="checkbox-label">
                         <input type="checkbox"
+                            
                             name="format_ids[]"
                             value="<?= $format->id ?>"
                             <?=chosen('format_ids', $format->id) ? "checked" : "" ?>
