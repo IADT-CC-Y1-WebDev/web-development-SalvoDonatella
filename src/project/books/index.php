@@ -19,123 +19,81 @@ catch (PDOException $e) {
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <style>
-        .filters {
-            padding: 0.75rem 1rem;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            background: #f5f5f5;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            align-items: center;
-        }
-
-        .filters .input {
-            display: flex;
-            gap: 20px;
-        }
-
-        .filters .input label.filter-label {
-            width: 108px;
-            display: flex;
-            justify-content: flex-end;
-            color: #252525;
-            font-weight: 900;
-            font-size: 0.9rem;
-        }
-
-        .filters input,
-        .filters select,
-        .filters button {
-            font-size: 0.9rem;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .card {
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            background: #f5f5f5;
-        }
-
-        .card.hidden {
-            display: none;
-        }
-
-        .card h3 {
-            margin-top: 0;
-            margin-bottom: 0.25rem;
-        }
-    </style>
         <?php include 'php/inc/head_content.php'; ?>
         <title>Books</title>
+
+    <style>
+        .card.hidden {
+	        display: none;
+        }
+    </style>
     </head>
     <body>
+    <div class="container header">
+        <div class="width-1"></div>
+        <div class="width-10 headItems">
+            <h1> Book<span style="color:#059c8e;">Vault</span> </h1>
+            <div class="header-button">
+                <a href="book_create.php">Add New Book</a>
+            </div>
+        </div>
+    </div>
+
         <div class="container">
-            <div class="width-12 header">
+            <div class="width-12">
                 <?php require 'php/inc/flash_message.php'; ?>
-                <div class="button">
-                    <a href="book_create.php">Add New Book</a>
-                </div>
             </div>
-        <form id="filters" class="filters">
+            <form id="filters" class="width-12 filters">
+                <div class="input">
+                    <div>
+                        <input type="text" id="title_filter" name="title_filter" placeholder="Search Books...">
+                    </div>
+                </div>
             <div class="input">
-                <label class="filter-label" for="title_filter">Title:</label>
                 <div>
-                    <input type="text" id="title_filter" name="title_filter" placeholder="Part of a title">
+                    <select id="publisher_filter" name="publisher_filter">
+                        <option value="">All publishers</option>
+                        <?php foreach ($publishers as $publisher): ?>
+                            <option value="<?= htmlspecialchars($publisher->id) ?>">
+                                <?= htmlspecialchars($publisher->name) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
             </div>
-        <div class="input">
-            <label class="filter-label" for="publisher_filter">Publisher:</label>
-            <div>
-                <select id="publisher_filter" name="publisher_filter">
-                    <option value="">All publishers</option>
-                    <?php foreach ($publishers as $publisher): ?>
-                        <option value="<?= htmlspecialchars($publisher->id) ?>">
-                            <?= htmlspecialchars($publisher->name) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+            <div class="input">
+                <div>
+                    <select id="format_filter" name="format_filter">
+                        <option value="">All formats</option>
+                        <?php foreach ($formats as $format): ?>
+                            <option value="<?= htmlspecialchars($format->id) ?>">
+                                <?= htmlspecialchars($format->name) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="input">
-            <label class="filter-label" for="format_filter">Format:</label>
-            <div>
-                <select id="format_filter" name="format_filter">
-                    <option value="">All formats</option>
-                    <?php foreach ($formats as $format): ?>
-                        <option value="<?= htmlspecialchars($format->id) ?>">
-                            <?= htmlspecialchars($format->name) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+            <div class="input">
+                <div>
+                    <select id="sort_by" name="sort_by">
+                        <option value="title_asc">Title A–Z</option>
+                        <option value="year_desc">Year (newest first)</option>
+                        <option value="year_asc">Year (oldest first)</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="input">
-            <label class="filter-label" for="sort_by">Sort:</label>
-            <div>
-                <select id="sort_by" name="sort_by">
-                    <option value="title_asc">Title A–Z</option>
-                    <option value="year_desc">Year (newest first)</option>
-                    <option value="year_asc">Year (oldest first)</option>
-                </select>
+            <div class="input">
+                <div>
+                    <button type="button" id="apply_filters">Apply Filters</button>
+                </div>
             </div>
-        </div>
-        <div class="input">
-            <label class="filter-label" for="apply_filters">Actions</label>
-            <div>
-                <button type="button" id="apply_filters">Apply Filters</button>
-                <button type="button" id="clear_filters">Clear Filters</button>
+            <div class="input">
+                <div>
+                    <button type="button" id="clear_filters">Clear Filters</button>
+                </div>
             </div>
-        </div>
-    </form>
+            
+        </form>
         </div>
         <div class="container">
             <?php if (empty($books)) { ?>
@@ -150,21 +108,30 @@ catch (PDOException $e) {
                         }
                         ?>
                         <div class="card"
-                            data-title="<?= htmlspecialchars($book->title) ?>"
+                            data-title="<?= htmlspecialchars($book->title) ?>" 
                             data-publisher="<?= htmlspecialchars($book->publisher_id) ?>"
                             data-format="[<?= implode(",", $bookFormatIds) ?>]"
                             data-year="<?= htmlspecialchars($book->year) ?>">
 
                             <div class="top-content">
-                                <h2>Title: <?= h($book->title) ?></h2>
-                                <p>Author: <?= h($book->author) ?></p>
+                                 <?php 
+                                    $limit = 20;
+                                    $text = $book->title;
+                                    if (strlen($text) > $limit) {
+                                        $preview = substr($text, 0, $limit) . "...";
+                                    } else {
+                                        $preview = $text;
+                                    }
+                                ?>
+                                <h2 class="book-title"><?= $preview ?></h2>
+                                <p>By <?= h($book->author) ?></p>
                             </div>
                             <div class="bottom-content">
                                 <img src="images/<?= h($book->cover_filename) ?>" alt="Image for <?= h($book->title) ?>" />
                                 <div class="actions">
-                                    <a href="book_view.php?id=<?= h($book->id) ?>">View</a>/ 
-                                    <a href="book_edit.php?id=<?= h($book->id) ?>">Edit</a>/ 
-                                    <a href="book_delete.php?id=<?= h($book->id) ?>">Delete</a>
+                                    <a href="book_view.php?id=<?= h($book->id) ?>">VIEW</a> |
+                                    <a href="book_edit.php?id=<?= h($book->id) ?>">EDIT</a> |
+                                    <a href="book_delete.php?id=<?= h($book->id) ?>">DELETE</a>
                                 </div>
                             </div>
                         </div>
