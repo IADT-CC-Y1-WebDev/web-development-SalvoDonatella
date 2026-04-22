@@ -23,7 +23,7 @@ try {
         'publisher_id' => $_POST['publisher_id'] ?? null,
         'description' => $_POST['description'] ?? null,
         'format_ids' => $_POST['format_ids'] ?? [],
-        'cover' => $_FILES['cover'] ?? null
+        'cover_filename' => $_FILES['cover_filename'] ?? null
     ];
 
     $rules = [
@@ -34,7 +34,7 @@ try {
         'publisher_id' => 'required|integer',
         'description' => 'required|notempty|min:10|max:5000',
         'format_ids' => 'required|array|min:1|max:10',
-        'cover' => 'file|cover|mimes:jpg,jpeg,png|max_file_size:5242880' // optional -- no required rule
+        'cover_filename' => 'file|cover|mimes:jpg,jpeg,png|max_file_size:5242880' // optional -- no required rule
     ];
 
     $validator = new Validator($data, $rules);
@@ -65,9 +65,9 @@ try {
 
     $coverFilename = null;
     $uploader = new ImageUpload();
-    if ($uploader->hasFile('cover')) {
+    if ($uploader->hasFile('cover_filename')) {
         $uploader->deleteImage($book->cover_filename);
-        $coverFilename = $uploader->process($_FILES['cover']);
+        $coverFilename = $uploader->process($_FILES['cover_filename']);
         if (!$coverFilename) {
             throw new Exception('Failed to process and save the image.');
         }

@@ -7,18 +7,16 @@ let authorInput = document.getElementById('author');
 let publisherIdInput = document.getElementById('publisher_id');
 let yearInput = document.getElementById('year');
 let isbnInput = document.getElementById('isbn'); 
-let formatIdsInput = document.getElementsByName('format_ids[]');
+// let formatIdsInput = document.getElementsByName('format_ids[]');
 let descriptionInput = document.getElementById('description'); 
-let coverInput = document.getElementById('cover_filename');
 
 let titleError = document.getElementById('title_error');
 let authorInputError = document.getElementById('author_error');
 let publisherIdError = document.getElementById('publisher_id_error');
 let yearError = document.getElementById('year_error');
 let isbnError = document.getElementById('isbn_error');
-let formatIdsError = document.getElementById('format_ids_error');
+// let formatIdsError = document.getElementById('format_ids_error');
 let descriptionError = document.getElementById('description_error');
-let coverError = document.getElementById('cover_error');
 
 let errors = {};
 
@@ -52,9 +50,8 @@ function showFieldErrors() {
     publisherIdError.innerHTML = errors.publisher_id || '';
     yearError.innerHTML = errors.year || '';
     isbnError.innerHTML = errors.isbn || '';
-    formatIdsError.innerHTML = errors.format_ids || '';
+    // formatIdsError.innerHTML = errors.format_ids || '';
     descriptionError.innerHTML = errors.description || '';
-    coverError.innerHTML = errors.cover || '';
 }
 
 function isRequired(value) {
@@ -117,26 +114,21 @@ function onSubmitForm(evt) {
   }
 
   //formats
-  let formatSelected = false;
-  for (let i = 0; i < formatIdsInput.length; i++) {
-    if (formatIdsInput[i].checked) {
-        formatSelected = true;
-        break;
-    }
-  }
+  // let formatSelected = false;
+  // for (let i = 0; i < formatIdsInput.length; i++) {
+  //   if (formatIdsInput[i].checked) {
+  //       formatSelected = true;
+  //       break;
+  //   }
+  // }
 
-  if(!formatSelected){
-      addError('format_ids', 'Select at least one format');
-    }
+  // if(!formatSelected){
+  //     addError('format_ids', 'Select at least one format');
+  //   }
 
 //Description
   if(!isRequired(descriptionInput.value)) {
     addError('description', 'Description is required!');
-  }
-
-  //covers
-  if(coverInput.files.length === 0) {
-    addError('cover', 'cover is required!');
   }
 
   showFieldErrors();

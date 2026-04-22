@@ -55,6 +55,7 @@ catch (PDOException $e) {
             </div>
             <div class="width-12 inputForm">
                 <form class="verticalForm" id=book_form action="book_update.php" method="POST" enctype="multipart/form-data" novalidate>
+                    <div id="error_summary_top" class="error-summary" style="display:none" role="alert"></div>  
 
                     <div class="input">
                         <input type="hidden" name="id" value="<?= h($book->id) ?>">
@@ -136,7 +137,6 @@ catch (PDOException $e) {
                         <label  for="cover">Image (optional)</label>
                         <div>
                             <input type="file" id="cover_filename" name="cover_filename" accept="image/*">
-                            <p><?= error('cover') ?></p>
                         </div>
                     </div>
 
