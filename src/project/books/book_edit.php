@@ -134,7 +134,7 @@ catch (PDOException $e) {
                     <div><img src="images/<?= $book->cover_filename ?>" /></div>
 
                     <div class="input">
-                        <label  for="cover">Image (optional)</label>
+                        <label  for="cover_filename">Image (optional)</label>
                         <div>
                             <input type="file" id="cover_filename" name="cover_filename" accept="image/*">
                         </div>

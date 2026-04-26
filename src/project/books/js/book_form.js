@@ -7,7 +7,6 @@ let authorInput = document.getElementById('author');
 let publisherIdInput = document.getElementById('publisher_id');
 let yearInput = document.getElementById('year');
 let isbnInput = document.getElementById('isbn'); 
-// let formatIdsInput = document.getElementsByName('format_ids[]');
 let descriptionInput = document.getElementById('description'); 
 
 let titleError = document.getElementById('title_error');
@@ -15,7 +14,6 @@ let authorInputError = document.getElementById('author_error');
 let publisherIdError = document.getElementById('publisher_id_error');
 let yearError = document.getElementById('year_error');
 let isbnError = document.getElementById('isbn_error');
-// let formatIdsError = document.getElementById('format_ids_error');
 let descriptionError = document.getElementById('description_error');
 
 let errors = {};
@@ -50,7 +48,6 @@ function showFieldErrors() {
     publisherIdError.innerHTML = errors.publisher_id || '';
     yearError.innerHTML = errors.year || '';
     isbnError.innerHTML = errors.isbn || '';
-    // formatIdsError.innerHTML = errors.format_ids || '';
     descriptionError.innerHTML = errors.description || '';
 }
 
@@ -112,19 +109,6 @@ function onSubmitForm(evt) {
   } else if(!isMaxLength(yearInput.value, isbnMinMax)) {
     addError('isbn', `ISBN must be at most ${isbnMinMax} characters long.`);
   }
-
-  //formats
-  // let formatSelected = false;
-  // for (let i = 0; i < formatIdsInput.length; i++) {
-  //   if (formatIdsInput[i].checked) {
-  //       formatSelected = true;
-  //       break;
-  //   }
-  // }
-
-  // if(!formatSelected){
-  //     addError('format_ids', 'Select at least one format');
-  //   }
 
 //Description
   if(!isRequired(descriptionInput.value)) {

@@ -98,9 +98,9 @@ catch (Exception $e) {
                         <p id="description_error" class="error"><?= error('description') ?></p>
                     
 
-                        <label for="cover">Book Cover Image (max 2MB)</label>
+                        <label for="cover_filename">Book Cover Image (max 2MB)</label>
                         <input type="file" id="cover_filename" name="cover_filename" accept="image/*">
-                        <p id="cover_error" class="error"><?= error('cover') ?></p>
+                        <p id="cover_error" class="error"><?= error('cover_filename') ?></p>
             
 
                         <button id="submit_btn" type="submit">Save Book</button>

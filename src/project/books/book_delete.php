@@ -37,9 +37,9 @@ try {
         throw new Exception('Book not found.');
     }
 
-    if ($book->image_filename) {
+    if ($book->cover_filename) {
         $uploader = new ImageUpload();
-        $uploader->deleteImage($book->image_filename);
+        $uploader->deleteImage($book->cover_filename);
     }
     $book->delete();
 
